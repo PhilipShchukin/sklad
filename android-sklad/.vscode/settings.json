@@ -1,0 +1,31 @@
+{
+  "workbench.colorCustomizations": {
+    "editor.background": "#183d2a",
+    "editor.foreground": "#e3f3e8",
+    "editorCursor.foreground": "#7fe1a7",
+    "editorLineNumber.foreground": "#6fbf73",
+    "editorLineNumber.activeForeground": "#a5d6a7",
+    "editor.selectionBackground": "#245e3d",
+    "editor.inactiveSelectionBackground": "#245e3d66",
+    "editor.selectionHighlightBackground": "#2b6f484d",
+    "editor.wordHighlightBackground": "#2b6f4866",
+    "editor.wordHighlightStrongBackground": "#378d5b66",
+    "editorBracketMatch.background": "#2b6f484d",
+    "editorBracketMatch.border": "#49a46e",
+    "statusBar.background": "#1f4b35",
+    "activityBar.background": "#1f4b35",
+    "sideBar.background": "#143023",
+    "titleBar.activeBackground": "#1f4b35",
+    "tab.activeBackground": "#1a3f2d",
+    "tab.inactiveBackground": "#143023"
+  },
+  "editor.tokenColorCustomizations": {
+    "comments": "#8fd19e"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  }
+}

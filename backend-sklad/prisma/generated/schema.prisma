@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Reports {
+  id              String       @id @default(cuid())
+  startDate       DateTime     @map("start_date")
+  endDate         DateTime     @map("end_date")
+  gtin            String
+  manufactureDate String       @map("manufacture_date")
+  bbd             String
+  batch           String
+  name            String
+  description     String
+  status          ReportStatus @default(IN_STOCK)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  codes Codes[]
+
+  @@map("reports")
+}
+
+model Codes {
+  id           String     @id @default(cuid())
+  code         String     @unique
+  gtin         String
+  boxNumber    Int?       @map("box_number")
+  boxLabel     String?    @map("box_label")
+  palletNumber Int?       @map("pallet_number")
+  palletLabel  String?    @map("pallet_label")
+  status       CodeStatus @default(IN_STOCK)
+
+  reportId String  @map("report_id")
+  report   Reports @relation(fields: [reportId], references: [id])
+
+  @@map("codes")
+}
+
+model ShipmentTask {
+  id            String   @id @default(cuid())
+  group         String
+  shippingDoc   String   @map("shipping_doc")
+  nomerTn       String?  @map("nomer_tn")
+  country       String
+  agent         Int
+  contract      String?
+  count         Int
+  operationDate DateTime @map("operation_date")
+
+  // связи
+  products ShipmentProduct[]
+  labels   ShipmentLabel[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("shipment_tasks")
+}
+
+model ShipmentProduct {
+  id       String @id @default(cuid())
+  gtin     String
+  cost     Float  @map("product_cost")
+  tax      Float  @map("product_tax")
+  currency String @map("product_currency")
+
+  // сертификаты (могут отсутствовать)
+  certificates Certificate[]
+
+  shipmentId String
+  shipment   ShipmentTask @relation(fields: [shipmentId], references: [id])
+
+  @@map("shipment_products")
+}
+
+model Certificate {
+  id              String   @id @default(cuid())
+  type            String   @map("certificate_type")
+  number          String   @map("certificate_number")
+  certificateDate DateTime @map("certificate_date")
+
+  productId String
+  product   ShipmentProduct @relation(fields: [productId], references: [id])
+
+  @@map("certificates")
+}
+
+model ShipmentLabel {
+  id         String       @id @default(cuid())
+  code       String // сам “label” (код маркировки)
+  shipmentId String
+  shipment   ShipmentTask @relation(fields: [shipmentId], references: [id])
+
+  @@map("shipment_labels")
+}
+
+enum CodeStatus {
+  IN_STOCK
+  DAMAGED
+  RESERVE
+  SHIPPED
+}
+
+enum ReportStatus {
+  IN_STOCK
+  RESERVE
+  SHIPPED
+}
