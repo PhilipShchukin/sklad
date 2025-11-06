@@ -13,6 +13,7 @@ export class DataService {
   ) {}
 
   async getAgentsList(): Promise<any> {
+    console.log('111')
     try {
       // Используйте метод с проверкой валидности
       const token = await this.authService.getValidToken();
